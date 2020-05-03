@@ -34,8 +34,8 @@ classdef OneVariableLinearRegression
         end
         %   Computes the cost of using theta as the parameter
         %   for linear regression to fit the data points in X and y
-        function J = ComputeCost(LR)
-            J = 0;
+        function Jcost = ComputeCost(LR)
+            Jcost = 0;
             sum = 0;
             LR.X = [ones(LR.m, 1), LR.data(:,1)]; 
             h=LR.X*LR.theta;
@@ -44,7 +44,7 @@ classdef OneVariableLinearRegression
                 sum= sum + (h(i)-LR.y(i))^2;
             end
             
-            J = (1/(2*LR.m))*sum;
+            Jcost = (1/(2*LR.m))*sum;
         end
         %   Performs gradient descent to learn theta. It updates theta
         %   by taking iterations gradient steps with learning rate alpha    

@@ -47,19 +47,19 @@ classdef MultiVariableLinearRegression
         end
         %   Computes the cost of using theta as the parameter
         %   for linear regression to fit the data points in X and y
-        function J = ComputeCostMulti(MLR,newX,newTheta)
-            J = 0;
+        function Jcost = ComputeCostMulti(MLR,extX,Theta)
+            Jcost = 0;
             sum = 0; 
-            h=newX*newTheta;
+            h=extX*Theta;
 
             for i=1:MLR.m
                 sum= sum + (h(i)-MLR.y(i))^2;
             end
             
-            J = (1/(2*MLR.m))*sum;
+            Jcost = (1/(2*MLR.m))*sum;
         end
-        %   Performs gradient descent to learn theta
-        %   updates theta by taking num_iters gradient steps 
+        %   Performs gradient descent to learn theta.
+        %   It updates theta by taking iterations gradient steps 
         %   with learning rate alpha
         function [Theta, J_history] = GradientDescentMulti(MLR, extX,Theta)
             J_history = zeros(MLR.iterations, 1);
@@ -95,17 +95,18 @@ classdef MultiVariableLinearRegression
             
             mu = mean(X_norm);
             sigma = std(X_norm);
-            val(1) = values(1)*mu(1,1)/sigma(1,1);
-            %val(2) = values(2)*mu(1,2)/sigma(1,2);
+            val = values.*mu./sigma;
             price = [1 val] *Theta;
-            %predict = example *MLR.GradientDescent';
-            fprintf('Predicted price of a %5.2f ,  ',values(1))
+            fprintf('Predicted price of a %5.2f  sq-ft house ',values(1))
+            fprintf('with %2.0f  bedrooms ',values(2))
             fprintf(' (using gradient descent): %f\n', price);
         end
-        % Plot Cost function for different values of theta0,theta1
-        function theta =  normalEqn(MLR,extX)
+        %   Computes the closed-form solution to linear regression. 
+        %   using the normal equations.
+        function theta =  NormalEqn(MLR,extX)
             theta = inv(extX'*extX)*extX'*MLR.y;
         end
+        % Predict values for various population sizes based on normal eq.
         function price = NormPredictions(MLR, values, Theta)
             
             price = [1 values] *Theta;
