@@ -5,27 +5,21 @@ classdef SVMSpamClassification
         y = [];
         Xtest = [];
         ytest = [];
-        data = [];
         m = 1;
-        iterations = 1000        
-        theta = []
     end
     methods
         %Constructor
         function SVMSC = SVMSpamClassification(string)
-            
-            structure = load(string);
-       
-            SVMSC.X = structure.X;
-            %SVMSC.x = structure.x;
-            SVMSC.y = structure.y;
-            %.Xtest = structure.Xtest;
-            %SVMSC.ytest = structure.ytest;
-            SVMSC.m = size(SVMSC.X, 1);
-            if size(SVMSC.X,1) ~= size(SVMSC.y,1)
-                    error('Invalid imported data');
-            end
-            
+            if string ~= ""
+                structure = load(string);
+
+                SVMSC.X = structure.X;
+                SVMSC.y = structure.y;
+                SVMSC.m = size(SVMSC.X, 1);
+                if size(SVMSC.X,1) ~= size(SVMSC.y,1)
+                        error('Invalid imported data');
+                end
+            end            
         end
         
         
@@ -514,3 +508,5 @@ classdef SVMSpamClassification
             fprintf('\nProcessed %s\n\nSpam Classification: %d\n', filename, pred);
             fprintf('(1 indicates spam, 0 indicates not spam)\n\n');
         end
+    end
+end

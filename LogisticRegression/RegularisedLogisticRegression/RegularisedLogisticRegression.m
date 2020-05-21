@@ -4,29 +4,29 @@ classdef RegularisedLogisticRegression
         y = [];
         data = [];
         m = 1;
-        iterations = 1000;
         lambda = 1;
-        theta = []
+        theta = [];
     end
     methods
         %Constructor
         function RLR = RegularisedLogisticRegression(string)
-            RLR.data = load(string);
-            if size(RLR.data,2) >= 2
-                RLR.X = RLR.data(:, 1: end -1);
-                RLR.y = RLR.data(:, end);
-                RLR.m = length(RLR.y);
-                RLR.theta = zeros(size(RLR.data,2), 1);
-                if size(RLR.X,1) ~= size(RLR.y,1)
+            if string ~= ""
+                RLR.data = load(string);
+                if size(RLR.data,2) >= 2
+                    RLR.X = RLR.data(:, 1: end -1);
+                    RLR.y = RLR.data(:, end);
+                    RLR.m = length(RLR.y);
+                    RLR.theta = zeros(size(RLR.data,2), 1);
+                    if size(RLR.X,1) ~= size(RLR.y,1)
+                        error('Invalid imported data');
+                    end
+                else
                     error('Invalid imported data');
                 end
-            else
-                error('Invalid imported data');
             end
         end
-        %   Plots the data points X and y into a new figure 
-        %   It plots the data points with + for the positive examples
-        %   and o for  negative examples. X is assumed to be a Mx2 matrix.
+        
+        % Plot training data
         function PlotData(RLR,X)
             % Create New Figure
             figure; hold on;
@@ -83,35 +83,64 @@ classdef RegularisedLogisticRegression
             g = 1./(1+ exp(-z));
         end
          
-        %   Computes cost and gradient for logistic regression with 
-        %   regularization Computes the cost of using theta as the 
-        %   parameter for regularized logistic regression and the
-        %   gradient of the cost w.r.t. to the parameters. 
+        %   Compute cost and gradient for regularized linear 
+        %   regression with multiple variables;
+        %   Computes the cost of using theta as the parameter 
+        %   for linear regression to fit the data points in X and y. 
+        %   Returns the cost in J and the gradient in grad
         function [J,grad] = ComputeCost(RLR,newX,newTheta,lambda)
-            J = 0;            
-            grad = zeros(size(newTheta));
-            h=sigmoid(newX*newTheta);
+            % Initialize some useful values
+            m = length(y); % number of training examples
+
+            % You need to return the following variables correctly 
+            J = 0;
+            grad = zeros(size(theta));
+
+            % ====================== YOUR CODE HERE ======================
+            % Instructions: Compute the cost and gradient of regularized linear 
+            %               regression for a particular choice of theta.
+            %
+            %               You should set J to the cost and grad to the gradient.
+            %
+
+            h = X*theta;
             sum =0;
-            for j=2:length(newTheta)
-                sum = sum + newTheta(j)^2;
+
+
+            for j=2:length(theta);
+                sum = sum + theta(j)^2;
             end
-            
-            J = (1/RLR.m)*(-RLR.y'*log(h)-(1-RLR.y)'*log(1-h))+ (lambda/(2*RLR.m))*sum;
-            
 
-            % Gradient
+            sum3 =0;
+            for i=1:m,
+                sum3= sum3 + (h(i)-y(i))^2;
+            end
 
-            for j=1:size(newTheta,1)
+
+            J = (1/(2*m))*sum3+ (lambda/(2*m))*sum;
+
+
+
+            for j=1:size(theta,1);
                 sum2=0;
-                for i=1:RLR.m
-                    sum2 = sum2 + (h(i)-RLR.y(i))*newX(i,j);
+                %j
+                for i=1:m;
+                    sum2 = sum2 + (h(i)-y(i))*X(i,j);
                 end
-                if(j==1)
-                    grad(j) = (1/RLR.m)*sum2;
+                if(j==1);
+                    grad(j) = (1/m)*sum2;
                 else
-                    grad(j) = (1/RLR.m)*sum2 + lambda*newTheta(j)/RLR.m;
+                    grad(j) = (1/m)*sum2 + lambda*theta(j)/m;
                 end
             end
+
+
+
+
+
+            % =========================================================================
+
+            grad = grad(:);
         end
         %   use a built-in function (fminunc) to find the
         %   optimal parameters theta.

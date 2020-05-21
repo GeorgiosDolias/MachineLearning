@@ -3,24 +3,25 @@ classdef LogisticRegression
         X = [];
         y = [];
         data = [];
-        m = 1;
-        iterations = 1000        
+        m = 1;     
         theta = []
     end
     methods
         %Constructor
         function LR = LogisticRegression(string)
-            LR.data = load(string);
-            if size(LR.data,2) >= 2
-                LR.X = LR.data(:, 1: end -1);
-                LR.y = LR.data(:, end);
-                LR.m = length(LR.y);
-                LR.theta = zeros(size(LR.data,2), 1);
-                if size(LR.X,1) ~= size(LR.y,1)
+            if string ~= ""
+                LR.data = load(string);
+                if size(LR.data,2) >= 2
+                    LR.X = LR.data(:, 1: end -1);
+                    LR.y = LR.data(:, end);
+                    LR.m = length(LR.y);
+                    LR.theta = zeros(size(LR.data,2), 1);
+                    if size(LR.X,1) ~= size(LR.y,1)
+                        error('Invalid imported data');
+                    end
+                else
                     error('Invalid imported data');
                 end
-            else
-                error('Invalid imported data');
             end
         end
         %    Plots the data points X and y into a new figure 

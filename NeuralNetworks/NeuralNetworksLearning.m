@@ -4,8 +4,6 @@ classdef NeuralNetworksLearning
         y = [];
         data = [];
         m = 1;
-        iterations = 1000;
-        lambda = 1;
         theta = []        
         input_layer_size  = 1; 
         num_labels = 1;
@@ -15,18 +13,20 @@ classdef NeuralNetworksLearning
     methods
         %Constructor
         function NNL = NeuralNetworksLearning(string)
-            structure = load(string);
-       
-            NNL.X = structure.X;
-            NNL.y = structure.y;
-            NNL.m = size(NNL.X, 1);
-            
-            if size(NNL.X,1) ~= size(NNL.y,1)
-                error('Invalid imported data');
+            if string ~= ""
+                structure = load(string);
+
+                NNL.X = structure.X;
+                NNL.y = structure.y;
+                NNL.m = size(NNL.X, 1);
+
+                if size(NNL.X,1) ~= size(NNL.y,1)
+                    error('Invalid imported data');
+                end
+                NNL.input_layer_size = size(NNL.X,2);
+                NNL.num_labels = length(unique(NNL.y));
+                NNL.theta = zeros(NNL.num_labels, size(NNL.X, 2)+ 1);
             end
-            NNL.input_layer_size = size(NNL.X,2);
-            NNL.num_labels = length(unique(NNL.y));
-            NNL.theta = zeros(NNL.num_labels, size(NNL.X, 2)+ 1);           
         end
         
         %   Randomly selects 100 data points to display.

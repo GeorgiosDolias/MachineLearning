@@ -4,23 +4,20 @@ classdef SupportVectorMachines
         y = [];
         Xval = [];
         yval = [];
-        data = [];
         m = 1;
-        iterations = 1000        
-        theta = []
     end
     methods
         %Constructor
         function SVM = SupportVectorMachines(string)
-            structure = load(string);
-       
-            SVM.X = structure.X;
-            SVM.y = structure.y;
-            SVM.Xval = structure.Xval;
-            SVM.yval = structure.yval;
-            SVM.m = size(SVM.X, 1);
-            if size(SVM.X,1) ~= size(SVM.y,1)
-                    error('Invalid imported data');
+            if string ~= ""
+                structure = load(string);
+
+                SVM.X = structure.X;
+                SVM.y = structure.y;
+                SVM.m = size(SVM.X, 1);
+                if size(SVM.X,1) ~= size(SVM.y,1)
+                        error('Invalid imported data');
+                end
             end
         end
         

@@ -4,7 +4,6 @@ classdef OneVsAllLogisticRegression
         y = [];
         data = [];
         m = 1;
-        iterations = 1000;
         lambda = 1;
         theta = []        
         input_layer_size  = 1; 
@@ -14,18 +13,20 @@ classdef OneVsAllLogisticRegression
     methods
         %Constructor
         function OVALR = OneVsAllLogisticRegression(string)
-            structure = load(string);
-       
-            OVALR.X = structure.X;
-            OVALR.y = structure.y;
-            OVALR.m = size(OVALR.X, 1);
-            
-            if size(OVALR.X,1) ~= size(OVALR.y,1)
-                error('Invalid imported data');
+            if string ~= ""
+                structure = load(string);
+
+                OVALR.X = structure.X;
+                OVALR.y = structure.y;
+                OVALR.m = size(OVALR.X, 1);
+
+                if size(OVALR.X,1) ~= size(OVALR.y,1)
+                    error('Invalid imported data');
+                end
+                OVALR.input_layer_size = size(OVALR.X,2);
+                OVALR.num_labels = length(unique(OVALR.y));
+                OVALR.theta = zeros(OVALR.num_labels, size(OVALR.X, 2)+ 1);
             end
-            OVALR.input_layer_size = size(OVALR.X,2);
-            OVALR.num_labels = length(unique(OVALR.y));
-            OVALR.theta = zeros(OVALR.num_labels, size(OVALR.X, 2)+ 1);           
         end
         
         %   Randomly selects 100 data points to display.
